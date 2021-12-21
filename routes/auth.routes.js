@@ -45,44 +45,46 @@ router.post(
 )
 
 //auth/api/login
-router.post('/login', [
-    check('email', "Enter correct email").normalizeEmail().isEmail(),
-    check('password', "Enter password").exists()
-], async (req, res) => {
-  try {
+router.post(
+  '/login',
+  [
+    check('email', 'Enter correct email').normalizeEmail().isEmail(),
+    check('password', 'Enter password').exists(),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req)
 
-    const errors = validationResult(req)
-
-    if(!errors.isEmpty()){
+      if (!errors.isEmpty()) {
         return res.status(400).json({
-            errors:errors.array(),
-            message: "Invalid login data"
+          errors: errors.array(),
+          message: 'Invalid login data',
         })
+      }
+
+      const { email, password } = req.body
+
+      const user = await User.findOne({ email })
+
+      if (!user) {
+        return res.status(400).json({ message: "User not find, such email isn't register " })
+      }
+
+      const isMatchPassword = await bcrypt.compare(password, user.password)
+
+      if (!isMatchPassword) {
+        return res.status(400).json({ message: 'Invalid password. Try again' })
+      }
+      const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '30 days' })
+
+      res.status(200).json({
+        token,
+        userId: user.id,
+      })
+    } catch (error) {
+      res.status(500).json({ message: 'Something goes wrong. Try again...' })
     }
-
-    const {email, password} = req.body
- 
-    const user = await User.findOne({email})
-
-    if(!user){
-        return res.status(400).json({message: "User not find, such email isn't register "})
-    }
-
-    const isMatchPassword = await bcrypt.compare(password, user.password)
-    
-    if(!isMatchPassword){
-        return res.status(400).json({message: 'Invalid password. Try again'})
-    }
-
-    const token = jwt.sign({userId: user.id},config.get('jwtSecret'),{expiresIn:'1h'})
-
-    res.status(200).json({
-        token, userId: user.id
-    })
-
-  } catch (error) {
-    res.status(500).json({ message: 'Something goes wrong. Try again...' })
-  }
-})
+  },
+)
 
 module.exports = router

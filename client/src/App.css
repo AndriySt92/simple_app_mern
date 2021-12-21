@@ -1,38 +1,58 @@
-.App {
-  text-align: center;
+:root {
+  --color1: rgb(9, 66, 95);
+  --color2: rgb(210 211 209);
+  --color3: rgb(112, 217, 221);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.body {
+  background-color: rgb(250, 232, 232);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.custom_btn {
+  background-color: var(--color1) !important;
+  margin-right: 10px !important;
+  display: block !important;
+  border: none !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.color1 {
+  color: var(--color1);
 }
 
-.App-link {
-  color: #61dafb;
+.color2 {
+  color: var(--color2);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.color3 {
+  color: var(--color3);
 }
+
+.bg_color1 {
+  background-color: var(--color1);
+}
+
+.custom_text {
+  color: var(--color1);
+  font-size: 20px !important;
+  text-decoration: none;
+}
+.custom_text a{
+  text-decoration: none;
+}
+
+.auth_form {
+  padding: 20px;
+  border: 2px solid rgb(182, 178, 178);
+  border-radius: 8px;
+  background-color: var(--color2);
+}
+
+.navbar {
+  background-color: var(--color1);
+  font-size: 20px;
+}
+
+.navbar-expand .navbar-nav .nav-link {
+  padding-right: 2.5rem !important;
+}
+

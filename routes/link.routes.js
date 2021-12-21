@@ -9,7 +9,7 @@ router.post('/generate', auth, async (req, res) => {
   try {
     const baseUrl = config.get('baseUrl')
     const { from } = req.body
-  
+    
     const code = shortid.generate()
 
     const existing = await Link.findOne({ from })
@@ -21,10 +21,7 @@ router.post('/generate', auth, async (req, res) => {
     const to = baseUrl + '/t/' + code
 
     const link = new Link({
-      code,
-      to,
-      from,
-      owner: req.user.userId,
+      code, to, from, owner: req.user.userId
     })
 
     await link.save()
@@ -35,7 +32,7 @@ router.post('/generate', auth, async (req, res) => {
   }
 })
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const links = await Link.find({ owner: req.user.userId })
     res.json(links)
